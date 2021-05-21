@@ -1,0 +1,22 @@
+---
+ - name: Display show version command
+   hosts: all
+   gather_facts: false
+
+   vars:
+     ansible_connection: network_cli
+     cli:
+      password: admin1234
+
+   tasks:
+     - name: show run
+       cisco.ios.ios_command:
+         commands:
+         - show version
+         wait_for:
+         - result[0] contains IOS
+       register: output
+
+     - name: print output
+       debug:
+         msg: "{{output.stdout}}"
